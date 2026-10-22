@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hellbuddy</title>
+<meta name="description" content="A little hellbender that lives on top of your Mac's windows.">
+<link rel="icon" href="icon.png">
+<style>
+  :root { --bg: #ffffff; --ink: #111111; --muted: #555555; --accent: #2a6b78; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #111111; --ink: #eeeeee; --muted: #aaaaaa; --accent: #5fb3c0; }
+  }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 17px/1.55 -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+  }
+  main { max-width: 680px; margin: 0 auto; padding: 32px 16px 64px; }
+  h1 { font-size: 40px; margin: 0 0 8px; }
+  h2 { font-size: 22px; margin: 40px 0 8px; }
+  img { width: 100%; display: block; margin: 24px 0; }
+  a { color: var(--accent); }
+  .download {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--bg);
+    text-decoration: none;
+    font-weight: bold;
+    padding: 12px 24px;
+  }
+  .fine, footer { color: var(--muted); font-size: 14px; }
+  ol, ul { padding-left: 22px; }
+  li { margin-bottom: 10px; }
+  #kofiframe { box-sizing: border-box; } /* its 100% width + padding would overflow on phones */
+</style>
+</head>
+<body>
+<main>
+  <h1>Hellbuddy</h1>
+  <p>A little hellbender that lives on top of your Mac's windows. He walks along them,
+      rides along when you move them, naps, and loves a boop.</p>
+
+  <img src="hellbender.png" alt="A drawing of a brown, spotted hellbender salamander">
+
+  <p>
+    <a class="download" href="https://github.com/kauffmanes/hellbuddy/releases/latest/download/Hellbender.dmg">Download for Mac</a>
+    <br><span class="fine">Free · macOS 13 or later · Apple Silicon and Intel</span>
+  </p>
+
+  <p>Hellbuddy is free, with a suggested donation of $2 if he makes you smile:
+    <a href="#support">chip in on Ko-fi</a>.</p>
+
+    <h2>Install</h2>
+    <ol>
+      <li><strong>Open the download.</strong>
+        Double-click <em>Hellbender.dmg</em> in your Downloads, then drag Hellbender onto the
+        Applications folder in the window that opens.</li>
+      <li><strong>Try opening it.</strong>
+        Open your Applications folder and double-click Hellbender. Your Mac will say it can't
+        check it for malicious software. That's expected: click <em>Done</em>.</li>
+      <li><strong>Allow it.</strong>
+        Open <em>System Settings</em> → <em>Privacy &amp; Security</em>, scroll down to
+        “Hellbender was blocked…”, and click <em>Open Anyway</em>. Confirm with your password
+        or Touch ID, then click <em>Open</em>.</li>
+      <li><strong>Say hi.</strong>
+        He drops onto your screen. You only have to do steps 2–3 once.</li>
+    </ol>
+    <p>Why the warning? To skip it, app makers have to pay Apple $99 a year for a
+      developer license, and this is a free little hobby app, so it doesn't have one. That's
+      the only reason your Mac complains. It doesn't ask for any permissions and can't see
+      what's in your windows, only where they are.</p>
+
+    <h2>What he does</h2>
+    <ul>
+      <li>Walks along the tops of your windows, and rides along when you drag one. Yank it fast and he goes flying.</li>
+      <li>Click him for hearts. Drag him around and toss him (gently, he remembers).</li>
+      <li>Hold your cursor still near him and he'll come say hello. Swipe past fast and he'll startle.</li>
+      <li>Leave him be and he'll yawn, stretch, and nap.</li>
+    </ul>
+    <p>For more, <strong>right-click him</strong> (or click the lizard in the menu bar):
+      drop him from the sky, change his size, or quit.</p>
+
+    <h2>Quit or remove him</h2>
+    <p><strong>To quit:</strong> right-click him (or click the lizard in the menu bar) and
+      choose <em>Quit</em>. Open Hellbender from Applications to bring him back.</p>
+    <p><strong>To remove:</strong> quit him first, then drag Hellbender from Applications
+      to the Trash.</p>
+
+  <h2 id="support">Support Hellbuddy</h2>
+  <iframe id='kofiframe' src='https://ko-fi.com/kauffeem/?hidefeed=true&widget=true&embed=true&preview=true' style='border:none;width:100%;padding:4px;background:#f9f9f9;' height='712' title='kauffeem'></iframe>
+
+  <p>This hellbender was hand-drawn in Procreate. More hellbuddies are coming soon!</p>
+
+  <footer>Made with love for a very flat salamander.</footer>
+</main>
+</body>
+</html>
