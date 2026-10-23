@@ -23,9 +23,14 @@
   img { width: 100%; display: block; margin: 24px 0 8px; }
   img.goat { width: 60%; max-width: 360px; }
   .caption { margin-top: 0; }
+  /* One computer's content at a time once the script knows which (see the end of the page). */
+  html[data-os="mac"] [data-os="windows"], html[data-os="windows"] [data-os="mac"] { display: none; }
+  html[data-os] .both-only { display: none; }
+  html:not([data-os]) .switch { display: none; }
   a { color: var(--accent); }
   .download {
     display: inline-block;
+    margin: 0 8px 8px 0;
     background: tomato;
     color: #ffffff;
     text-decoration: none;
@@ -45,8 +50,12 @@
     when you move them, nap, and love a boop.</p>
 
   <p>
-    <a class="download" href="https://github.com/kauffmanes/hellbuddy/releases/latest/download/Hellbender.dmg">Download for Mac</a>
-    <br><span class="fine">Free · macOS 13 or later · Apple Silicon and Intel</span>
+    <a class="download" data-os="mac" href="https://github.com/kauffmanes/hellbuddy/releases/latest/download/Hellbender.dmg">Download for Mac</a>
+    <a class="download" data-os="windows" href="https://github.com/kauffmanes/hellbuddy/releases/latest/download/Hellbuddy-Setup.exe">Download for Windows</a>
+    <br><span class="fine" data-os="mac">Free · macOS 13 or later · Apple Silicon and Intel</span>
+    <span class="fine" data-os="windows">Free · Windows 10 or 11</span>
+    <br><span class="fine switch" data-os="mac">On a Windows PC? <a href="?os=windows">Show the Windows version</a></span>
+    <span class="fine switch" data-os="windows">On a Mac? <a href="?os=mac">Show the Mac version</a></span>
   </p>
 
   <p>Hellbuddy is free, with a suggested donation of $2 if your hellbuddy makes you smile:
@@ -64,27 +73,66 @@
   <p>Pick your hellbuddy any time: right-click it and choose <em>Animal</em>. Every hellbuddy is
     hand-drawn in Procreate, and more are coming soon.</p>
 
-  <h2>Install</h2>
-  <ol>
-    <li><strong>Open the download.</strong>
-      Double-click <em>Hellbender.dmg</em> in your Downloads, then drag Hellbender onto the
-      Applications folder in the window that opens.</li>
-    <li><strong>Open it.</strong>
-      Double-click Hellbender in your Applications folder. The first time, your Mac checks
-      that it's OK to open something downloaded from the internet: click <em>Open</em>.</li>
-    <li><strong>Say hi.</strong>
-      Your hellbuddy drops onto your screen.</li>
-  </ol>
+  <section data-os="mac">
+    <h2>Install<span class="both-only"> on a Mac</span></h2>
+    <ol>
+      <li><strong>Open the download.</strong>
+        Double-click <em>Hellbender.dmg</em> in your Downloads, then drag Hellbender onto the
+        Applications folder in the window that opens.</li>
+      <li><strong>Open it.</strong>
+        Double-click Hellbender in your Applications folder. The first time, your Mac checks
+        that it's OK to open something downloaded from the internet: click <em>Open</em>.</li>
+      <li><strong>Say hi.</strong>
+        Your hellbuddy drops onto your screen.</li>
+    </ol>
+  </section>
+
+  <section data-os="windows">
+    <h2>Install<span class="both-only"> on Windows</span></h2>
+    <ol>
+      <li><strong>Run the installer.</strong>
+        Open <em>Hellbuddy-Setup.exe</em> from your Downloads.</li>
+      <li><strong>Get past the blue screen.</strong>
+        If Windows says “Windows protected your PC”, click <em>More info</em>, then
+        <em>Run anyway</em>. You only see this once.</li>
+      <li><strong>Say hi.</strong>
+        Your hellbuddy drops onto your screen, and keeps itself up to date from then on.</li>
+    </ol>
+    <p>Why the blue screen? Windows shows it for apps from makers who haven't bought a
+      code-signing certificate, which costs hundreds of dollars a year. Hellbuddy doesn't
+      ask for any permissions and can't see what's in your windows, only where they are.</p>
+  </section>
 
   <h2>Quit or remove</h2>
-  <p><strong>To quit:</strong> right-click your hellbuddy (or click the animal in the menu bar)
-    and choose <em>Quit</em>. Open Hellbender from Applications to bring it back.</p>
-  <p><strong>To remove:</strong> quit first, then drag Hellbender from Applications to the Trash.</p>
+  <div data-os="mac">
+    <p><strong>To quit<span class="both-only"> on a Mac</span>:</strong> right-click your hellbuddy
+      (or click the animal in the menu bar) and choose <em>Quit</em>. Open Hellbender from
+      Applications to bring it back.</p>
+    <p><strong>To remove:</strong> quit first, then drag Hellbender from Applications to the Trash.</p>
+  </div>
+  <div data-os="windows">
+    <p><strong>To quit<span class="both-only"> on Windows</span>:</strong> right-click your
+      hellbuddy (or its icon in the taskbar tray, by the clock) and choose <em>Quit</em>. Open
+      Hellbuddy from the Start menu to bring it back.</p>
+    <p><strong>To remove:</strong> go to <em>Settings</em> → <em>Apps</em> → <em>Installed apps</em>,
+      find Hellbuddy, and choose <em>Uninstall</em>.</p>
+  </div>
 
   <h2 id="support">Support Hellbuddy</h2>
   <iframe id='kofiframe' src='https://ko-fi.com/kauffeem/?hidefeed=true&widget=true&embed=true&preview=true' style='border:none;width:100%;padding:4px;background:#f9f9f9;' height='712' title='kauffeem'></iframe>
 
   <footer>Made with love for flat salamanders, loud goats, and whoever comes next.</footer>
 </main>
+<script>
+  // Show only the visitor's own computer's download and steps (?os=mac or
+  // ?os=windows to pick). Phones and anything unrecognized see both.
+  (() => {
+    const chosen = new URLSearchParams(location.search).get("os");
+    const p = (navigator.userAgentData?.platform || navigator.platform || navigator.userAgent).toLowerCase();
+    const os = chosen === "mac" || chosen === "windows" ? chosen
+      : p.includes("mac") ? "mac" : p.includes("win") ? "windows" : null;
+    if (os) document.documentElement.dataset.os = os;
+  })();
+</script>
 </body>
 </html>
