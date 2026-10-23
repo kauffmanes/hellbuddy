@@ -4,12 +4,21 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Hellbuddies</title>
-<meta name="description" content="A little hellbender that lives on top of your Mac's windows.">
+<meta name="description" content="Little hand-drawn animals that live on top of your windows, for Mac and Windows.">
 <link rel="icon" href="icon.png">
 <style>
-  :root { --bg: #ffffff; --ink: #111111; --muted: #555555; --accent: #2a6b78; --line: #dddddd; }
+  :root {
+    --bg: #ffffff; --ink: #111111; --muted: #555555; --accent: #2a6b78; --line: #dddddd;
+    --band: #f3f1ea;                       /* How it works */
+    --extras: #1e1a2e; --extras-ink: #f5f2ff; --extras-muted: #c6bfdc; --extras-line: #3d3557; /* Extras */
+    --pumpkin: #ff7a1a;
+  }
   @media (prefers-color-scheme: dark) {
-    :root { --bg: #111111; --ink: #eeeeee; --muted: #aaaaaa; --accent: #5fb3c0; --line: #333333; }
+    :root {
+      --bg: #111111; --ink: #eeeeee; --muted: #aaaaaa; --accent: #5fb3c0; --line: #333333;
+      --band: #1b1b1b;
+      --extras: #1e1a2e; --extras-line: #3d3557;
+    }
   }
   body {
     margin: 0;
@@ -17,128 +26,228 @@
     color: var(--ink);
     font: 17px/1.55 -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
   }
-  main { max-width: 680px; margin: 0 auto; padding: 32px 16px 64px; }
-  h1 { font-size: 40px; margin: 0 0 8px; }
-  h2 { font-size: 22px; margin: 40px 0 8px; }
   img { width: 100%; display: block; }
-  .hero { margin: 8px 0 24px; }
-  /* Meet the hellbuddies: one tile per animal; add an <li> to add one. */
-  .animals { list-style: none; padding: 0; margin: 0 0 16px; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
-  .animals li { border: 1px solid var(--line); padding: 12px; text-align: center; }
-  .animals img { aspect-ratio: 4 / 3; object-fit: contain; margin: 0 0 8px; }
-  .animals strong { display: block; }
-  .animals span { color: var(--muted); font-size: 14px; }
-  /* One computer's content at a time once the script knows which (see the end of the page). */
-  html[data-os="mac"] [data-os="windows"], html[data-os="windows"] [data-os="mac"] { display: none; }
-  html[data-os] .both-only { display: none; }
-  html:not([data-os]) .switch { display: none; }
   a { color: var(--accent); }
-  .download {
+  h1 { font-size: 44px; line-height: 1.1; margin: 0 0 8px; }
+  h2 { font-size: 30px; line-height: 1.2; margin: 0 0 8px; }
+  h3 { font-size: 19px; margin: 0 0 4px; }
+  ol, ul { padding-left: 22px; }
+  li { margin-bottom: 10px; }
+
+  /* The page is four bands, each a different background so they read as separate parts. */
+  .band { padding: 56px 16px; border-top: 1px solid var(--line); }
+  .band > .inner { max-width: 760px; margin: 0 auto; }
+  .lead { font-size: 19px; color: var(--muted); margin: 0 0 28px; }
+
+  nav { max-width: 760px; margin: 0 auto; padding: 16px 16px 0; display: flex; flex-wrap: wrap; gap: 4px 20px; font-size: 15px; }
+  nav a { color: var(--muted); text-decoration: none; }
+  nav a:hover { color: var(--ink); text-decoration: underline; }
+
+  /* 1. Hero */
+  .hero { border-top: 0; padding-top: 24px; }
+  .hero img { margin: 16px 0 20px; }
+  .hero .tagline { font-size: 21px; margin: 0 0 20px; }
+  .download, .buy {
     display: inline-block;
     margin: 0 8px 8px 0;
-    background: tomato;
     color: #ffffff;
     text-decoration: none;
     font-weight: bold;
     padding: 12px 24px;
   }
-  .fine, footer { color: var(--muted); font-size: 14px; }
-  ol, ul { padding-left: 22px; }
-  li { margin-bottom: 10px; }
+  .download { background: tomato; }
+  .fine { color: var(--muted); font-size: 14px; }
+  .hero .fine { display: block; }
+
+  /* 2. How it works */
+  .how { background: var(--band); }
+  .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 0 0 32px; }
+  .steps-grid > div { background: var(--bg); border: 1px solid var(--line); padding: 16px; }
+  .steps-grid p { margin: 0; color: var(--muted); font-size: 15px; }
+  /* Meet the hellbuddies: one tile per animal; add an <li> to add one. */
+  .animals { list-style: none; padding: 0; margin: 12px 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+  .animals li { background: var(--bg); border: 1px solid var(--line); padding: 12px; text-align: center; margin: 0; }
+  .animals img { aspect-ratio: 4 / 3; object-fit: contain; margin: 0 0 8px; }
+  .animals strong { display: block; }
+  .animals span { color: var(--muted); font-size: 14px; }
+  .soon { display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 15px; border-style: dashed !important; }
+
+  /* 3. Installation */
+  .install-steps { counter-reset: step; list-style: none; padding: 0; margin: 0 0 24px; }
+  .install-steps li { counter-increment: step; position: relative; padding-left: 48px; margin-bottom: 18px; }
+  .install-steps li::before {
+    content: counter(step); position: absolute; left: 0; top: 0;
+    width: 32px; height: 32px; line-height: 32px; text-align: center;
+    background: var(--ink); color: var(--bg); font-weight: bold;
+  }
+  .note { border-left: 3px solid var(--line); padding: 2px 0 2px 14px; color: var(--muted); font-size: 15px; }
+  .quit { margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--line); }
+
+  /* 4. Extras */
+  .extras { background: var(--extras); color: var(--extras-ink); border-top-color: var(--extras-line); }
+  .extras .lead, .extras .fine, .extras p.muted { color: var(--extras-muted); }
+  .extras a { color: #ffb37a; }
+  .pack { border: 1px solid var(--extras-line); background: rgba(255, 255, 255, 0.04); margin: 0 0 24px; }
+  .pack-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px; padding: 20px 20px 0; }
+  .price { font-weight: bold; color: var(--pumpkin); font-size: 19px; }
+  .pack-body { padding: 8px 20px 20px; }
+  .pack-pics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 16px 0; }
+  .pack-pics img { background: #ffffff; aspect-ratio: 5 / 3; object-fit: contain; padding: 8px; box-sizing: border-box; }
+  .treats { display: flex; gap: 8px; align-items: center; margin: 0 0 16px; }
+  .treats img { width: 56px; height: 56px; background: #ffffff; padding: 6px; box-sizing: border-box; }
+  .extras .buy { background: var(--pumpkin); color: #1e1a2e; }
+
+  footer { max-width: 760px; margin: 0 auto; padding: 40px 16px 56px; color: var(--muted); font-size: 14px; }
+  footer h2 { font-size: 17px; color: var(--ink); margin-top: 0; }
+
+  /* One computer's content at a time once the script knows which (see the end of the page). */
+  html[data-os="mac"] [data-os="windows"], html[data-os="windows"] [data-os="mac"] { display: none; }
+  html[data-os] .both-only { display: none; }
+  html:not([data-os]) .switch { display: none; }
+
+  @media (max-width: 560px) {
+    h1 { font-size: 36px; }
+    h2 { font-size: 26px; }
+    .band { padding: 40px 16px; }
+  }
 </style>
 </head>
 <body>
-<main>
-  <h1>Hellbuddies</h1>
-  <img class="hero" src="hellbender.png" alt="Hellbuddy the Hellbender, a hand-drawn brown spotted salamander">
-  <p>Little hellbuddies that live on top of your windows. They walk along them, ride along
-    when you move them, nap, and love a boop.</p>
+<nav aria-label="Sections">
+  <a href="#how">How it works</a>
+  <a href="#install">Install</a>
+  <a href="#extras">Extras</a>
+</nav>
 
-  <p>
-    <a class="download" data-os="mac" data-goatcounter-click="download-mac" href="https://github.com/kauffmanes/hellbuddy/releases/latest/download/Hellbuddies.dmg">Download for Mac</a>
-    <a class="download" data-os="windows" data-goatcounter-click="download-windows" href="https://github.com/kauffmanes/hellbuddy/releases/latest/download/Hellbuddies-Setup.exe">Download for Windows</a>
-    <br><span class="fine" data-os="mac">Free · macOS 13 or later · Apple Silicon and Intel</span>
-    <span class="fine" data-os="windows">Free · Windows 10 or 11</span>
-    <br><span class="fine switch" data-os="mac">On a Windows PC? <a href="?os=windows">Show the Windows version</a></span>
-    <span class="fine switch" data-os="windows">On a Mac? <a href="?os=mac">Show the Mac version</a></span>
-  </p>
-
-  <p>Hellbuddies is free, with a suggested tip of $2 if your hellbuddy makes you smile:
-    <a href="#support">chip in</a>.</p>
-
-  <h2>Meet the hellbuddies</h2>
-  <ul class="animals">
-    <li><img src="hellbender.png" alt="A brown, spotted hellbender salamander"><strong>Hellbuddy</strong><span>the Hellbender</span></li>
-    <li><img src="zaduck.png" alt="A shaggy white mountain goat with black horns"><strong>Zaduck</strong><span>the Mountain Goat</span></li>
-  </ul>
-
-  <p>Pick your hellbuddy any time: right-click it and choose <em>Animal</em>. Every hellbuddy is
-    hand-drawn in Procreate, and more are coming soon.</p>
-
-  <section data-os="mac">
-    <h2>Install<span class="both-only"> on a Mac</span></h2>
-    <ol>
-      <li><strong>Open the download.</strong>
-        Double-click <em>Hellbuddies.dmg</em> in your Downloads, then drag Hellbuddies onto the
-        Applications folder in the window that opens.</li>
-      <li><strong>Open it.</strong>
-        Double-click Hellbuddies in your Applications folder. The first time, your Mac checks
-        that it's OK to open something downloaded from the internet: click <em>Open</em>.</li>
-      <li><strong>Say hi.</strong>
-        Your hellbuddy drops onto your screen.</li>
-    </ol>
-    <p>Had the older <em>Hellbender</em> app? It's the same thing under its old name: drag it
-      from Applications to the Trash.</p>
-  </section>
-
-  <section data-os="windows">
-    <h2>Install<span class="both-only"> on Windows</span></h2>
-    <ol>
-      <li><strong>Run the installer.</strong>
-        Open <em>Hellbuddies-Setup.exe</em> from your Downloads.</li>
-      <li><strong>Get past the blue screen.</strong>
-        If Windows says “Windows protected your PC”, click <em>More info</em>, then
-        <em>Run anyway</em>. You only see this once.</li>
-      <li><strong>Say hi.</strong>
-        Your hellbuddy drops onto your screen, and keeps itself up to date from then on.</li>
-    </ol>
-    <p>Why the blue screen? Windows shows it for apps from makers who haven't bought a
-      code-signing certificate, which costs hundreds of dollars a year. Hellbuddies doesn't
-      ask for any permissions and can't see what's in your windows, only where they are.</p>
-  </section>
-
-  <h2>Quit or remove</h2>
-  <div data-os="mac">
-    <p><strong>To quit<span class="both-only"> on a Mac</span>:</strong> right-click your hellbuddy
-      (or click the animal in the menu bar) and choose <em>Quit</em>. Open Hellbuddies from
-      Applications to bring it back.</p>
-    <p><strong>To remove:</strong> quit first, then drag Hellbuddies from Applications to the Trash.</p>
+<header class="band hero">
+  <div class="inner">
+    <h1>Hellbuddies</h1>
+    <img src="hellbender.png" alt="Hellbuddy the Hellbender, a hand-drawn brown spotted salamander">
+    <p class="tagline">Little hand-drawn animals that live on top of your windows.</p>
+    <p>
+      <a class="download" data-os="mac" data-goatcounter-click="download-mac" href="https://github.com/kauffmanes/hellbuddy/releases/latest/download/Hellbuddies.dmg">Download for Mac</a>
+      <a class="download" data-os="windows" data-goatcounter-click="download-windows" href="https://github.com/kauffmanes/hellbuddy/releases/latest/download/Hellbuddies-Setup.exe">Download for Windows</a>
+      <span class="fine" data-os="mac">Free · macOS 13 or later · Apple Silicon and Intel</span>
+      <span class="fine" data-os="windows">Free · Windows 10 or 11</span>
+      <span class="fine switch" data-os="mac">On a Windows PC? <a href="?os=windows">Show the Windows version</a></span>
+      <span class="fine switch" data-os="windows">On a Mac? <a href="?os=mac">Show the Mac version</a></span>
+    </p>
   </div>
-  <div data-os="windows">
-    <p><strong>To quit<span class="both-only"> on Windows</span>:</strong> right-click your
-      hellbuddy (or its icon in the taskbar tray, by the clock) and choose <em>Quit</em>. Open
-      Hellbuddies from the Start menu to bring it back.</p>
-    <p><strong>To remove:</strong> go to <em>Settings</em> → <em>Apps</em> → <em>Installed apps</em>,
-      find Hellbuddies, and choose <em>Uninstall</em>.</p>
+</header>
+
+<section class="band how" id="how" aria-labelledby="how-title">
+  <div class="inner">
+    <h2 id="how-title">How it works</h2>
+    <p class="lead">Your hellbuddy wanders along the tops of your windows while you work.</p>
+    <div class="steps-grid">
+      <div><h3>Lives on your windows</h3><p>Walks along them, rides along when you drag one, and tumbles off when you yank it away.</p></div>
+      <div><h3>Has a life of its own</h3><p>Naps when it's bored, watches your cursor, and loves a boop. Drag it anywhere you like.</p></div>
+      <div><h3>Gets snacks</h3><p>Pick a food from the menu. It drops from the sky and your hellbuddy goes and gets it.</p></div>
+    </div>
+    <h3>Meet the hellbuddies</h3>
+    <p class="fine">Switch any time: right-click your hellbuddy and choose <em>Animal</em>. Every one is hand-drawn in Procreate.</p>
+    <ul class="animals">
+      <li><img src="hellbender.png" alt="A brown, spotted hellbender salamander"><strong>Hellbuddy</strong><span>the Hellbender</span></li>
+      <li><img src="zaduck.png" alt="A shaggy white mountain goat with black horns"><strong>Zaduck</strong><span>the Mountain Goat</span></li>
+      <li class="soon">More coming soon</li>
+    </ul>
   </div>
+</section>
 
-  <h2 id="support">Support Hellbuddies</h2>
-  <p>Hellbuddies is free and hand-drawn. If it makes you smile, a tip keeps new hellbuddies coming.
-    Pay what you like; $2 is suggested.</p>
-  <p><a class="download" data-goatcounter-click="tip" href="https://kauffmanex.gumroad.com/l/tip">Leave a tip</a></p>
+<section class="band" id="install" aria-labelledby="install-title">
+  <div class="inner">
+    <h2 id="install-title">Install</h2>
 
+    <div data-os="mac">
+      <h3 class="both-only">On a Mac</h3>
+      <ol class="install-steps">
+        <li><strong>Open the download.</strong>
+          Double-click <em>Hellbuddies.dmg</em> in your Downloads, then drag Hellbuddies onto the
+          Applications folder in the window that opens.</li>
+        <li><strong>Open it.</strong>
+          Double-click Hellbuddies in your Applications folder. The first time, your Mac checks
+          that it's OK to open something downloaded from the internet: click <em>Open</em>.</li>
+        <li><strong>Say hi.</strong>
+          Your hellbuddy drops onto your screen. It updates itself from then on.</li>
+      </ol>
+    </div>
+
+    <div data-os="windows">
+      <h3 class="both-only">On Windows</h3>
+      <ol class="install-steps">
+        <li><strong>Run the installer.</strong>
+          Open <em>Hellbuddies-Setup.exe</em> from your Downloads.</li>
+        <li><strong>Get past the blue screen.</strong>
+          If Windows says “Windows protected your PC”, click <em>More info</em>, then
+          <em>Run anyway</em>. You only see this once.</li>
+        <li><strong>Say hi.</strong>
+          Your hellbuddy drops onto your screen, and keeps itself up to date from then on.</li>
+      </ol>
+      <p class="note">Why the blue screen? Windows shows it for apps from makers who haven't bought a
+        code-signing certificate, which costs hundreds of dollars a year. Hellbuddies doesn't
+        ask for any permissions and can't see what's in your windows, only where they are.</p>
+    </div>
+
+    <div class="quit">
+      <h3>Quit or remove</h3>
+      <div data-os="mac">
+        <p><strong>To quit<span class="both-only"> on a Mac</span>:</strong> right-click your hellbuddy
+          (or click the animal in the menu bar) and choose <em>Quit</em>. Open Hellbuddies from
+          Applications to bring it back.</p>
+        <p><strong>To remove:</strong> quit first, then drag Hellbuddies from Applications to the Trash.</p>
+      </div>
+      <div data-os="windows">
+        <p><strong>To quit<span class="both-only"> on Windows</span>:</strong> right-click your
+          hellbuddy (or its icon in the taskbar tray, by the clock) and choose <em>Quit</em>. Open
+          Hellbuddies from the Start menu to bring it back.</p>
+        <p><strong>To remove:</strong> go to <em>Settings</em> → <em>Apps</em> → <em>Installed apps</em>,
+          find Hellbuddies, and choose <em>Uninstall</em>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band extras" id="extras" aria-labelledby="extras-title">
+  <div class="inner">
+    <h2 id="extras-title">Extras</h2>
+    <p class="lead">Hellbuddies is free. Packs add outfits and treats, drawn by hand like everything else.</p>
+
+    <article class="pack" id="halloween" aria-labelledby="halloween-title">
+      <div class="pack-head">
+        <h3 id="halloween-title">🎃 Halloween Pack</h3>
+        <span class="price">$2.99</span>
+      </div>
+      <div class="pack-body">
+        <p class="muted">A witch outfit, a cozy scarf and a ghost sheet for every hellbuddy, plus candy corn and pumpkins to feed them.</p>
+        <div class="pack-pics">
+          <img src="halloween-goat-witch.png" alt="Zaduck in a witch hat, cape and striped socks">
+          <img src="halloween-hellbender-scarf.png" alt="The hellbender in an orange plaid scarf">
+          <img src="halloween-goat-ghost.png" alt="Zaduck under a ghost sheet, horns poking through">
+        </div>
+        <div class="treats">
+          <img src="halloween-candy-corn.png" alt="Candy corn">
+          <img src="halloween-pumpkin.png" alt="A pumpkin">
+          <span class="fine">Candy corn and pumpkin</span>
+        </div>
+        <p><a class="buy" data-goatcounter-click="buy-halloween" href="https://kauffmanex.gumroad.com/l/halloween-pack">Get the Halloween Pack</a></p>
+        <p class="fine">After you buy, right-click your hellbuddy, choose <em>Outfits</em> → <em>Unlock a Pack…</em>,
+          and paste the license key from your receipt. Works on up to 5 of your computers.</p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<footer>
   <h2 id="privacy">Privacy</h2>
   <p>Hellbuddies doesn't collect anything about you. It sees where your windows are, not
-    what's in them, and checks GitHub about once a day for a newer version. This website counts
-    visits with <a href="https://www.goatcounter.com" target="_blank" rel="noopener">GoatCounter</a>,
-    which uses no cookies and doesn't track you. Tips are handled by Gumroad, under
+    what's in them, and checks GitHub about once a day for a newer version. When you unlock a
+    pack, it checks your license key with Gumroad. This website counts visits with
+    <a href="https://www.goatcounter.com" target="_blank" rel="noopener">GoatCounter</a>,
+    which uses no cookies and doesn't track you. Packs are sold through Gumroad, under
     <a href="https://gumroad.com/privacy" target="_blank" rel="noopener">its privacy policy</a>.</p>
-
-  <footer>
-    <p>Made with love for flat salamanders, loud goats, and whoever comes next.</p>
-    <p>© 2026 Emily Kauffman. The Hellbuddies app and its drawings are free to use, but not to copy or redistribute.</p>
-  </footer>
-</main>
+  <p>Made with love for flat salamanders, loud goats, and whoever comes next.</p>
+  <p>© 2026 Emily Kauffman. The Hellbuddies app and its drawings are free to use, but not to copy or redistribute.</p>
+</footer>
 <script>
   // Show only the visitor's own computer's download and steps (?os=mac or
   // ?os=windows to pick). Phones and anything unrecognized see both.
