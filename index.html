@@ -7,9 +7,9 @@
 <meta name="description" content="A little hellbender that lives on top of your Mac's windows.">
 <link rel="icon" href="icon.png">
 <style>
-  :root { --bg: #ffffff; --ink: #111111; --muted: #555555; --accent: #2a6b78; }
+  :root { --bg: #ffffff; --ink: #111111; --muted: #555555; --accent: #2a6b78; --line: #dddddd; }
   @media (prefers-color-scheme: dark) {
-    :root { --bg: #111111; --ink: #eeeeee; --muted: #aaaaaa; --accent: #5fb3c0; }
+    :root { --bg: #111111; --ink: #eeeeee; --muted: #aaaaaa; --accent: #5fb3c0; --line: #333333; }
   }
   body {
     margin: 0;
@@ -20,9 +20,14 @@
   main { max-width: 680px; margin: 0 auto; padding: 32px 16px 64px; }
   h1 { font-size: 40px; margin: 0 0 8px; }
   h2 { font-size: 22px; margin: 40px 0 8px; }
-  img { width: 100%; display: block; margin: 24px 0 8px; }
-  img.goat { width: 60%; max-width: 360px; }
-  .caption { margin-top: 0; }
+  img { width: 100%; display: block; }
+  .hero { margin: 8px 0 24px; }
+  /* Meet the hellbuddies: one tile per animal; add an <li> to add one. */
+  .animals { list-style: none; padding: 0; margin: 0 0 16px; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+  .animals li { border: 1px solid var(--line); padding: 12px; text-align: center; }
+  .animals img { aspect-ratio: 4 / 3; object-fit: contain; margin: 0 0 8px; }
+  .animals strong { display: block; }
+  .animals span { color: var(--muted); font-size: 14px; }
   /* One computer's content at a time once the script knows which (see the end of the page). */
   html[data-os="mac"] [data-os="windows"], html[data-os="windows"] [data-os="mac"] { display: none; }
   html[data-os] .both-only { display: none; }
@@ -45,6 +50,7 @@
 <body>
 <main>
   <h1>Hellbuddies</h1>
+  <img class="hero" src="hellbender.png" alt="Hellbuddy the Hellbender, a hand-drawn brown spotted salamander">
   <p>Little hellbuddies that live on top of your windows. They walk along them, ride along
     when you move them, nap, and love a boop.</p>
 
@@ -61,13 +67,10 @@
     <a href="#support">chip in</a>.</p>
 
   <h2>Meet the hellbuddies</h2>
-  <img src="hellbender.png" alt="A drawing of a brown, spotted hellbender salamander">
-  <p class="caption"><strong>Hellbuddy</strong> the Hellbender walks along your windows, rides
-    along when you drag them, naps, and loves a boop.</p>
-
-  <img class="goat" src="zaduck.png" alt="A drawing of a shaggy white mountain goat with black horns">
-  <p class="caption"><strong>Zaduck</strong> the Mountain Goat hops along, leaps from window to window,
-    and sometimes charges headfirst into the edge of your screen. He's a yeller.</p>
+  <ul class="animals">
+    <li><img src="hellbender.png" alt="A brown, spotted hellbender salamander"><strong>Hellbuddy</strong><span>the Hellbender</span></li>
+    <li><img src="zaduck.png" alt="A shaggy white mountain goat with black horns"><strong>Zaduck</strong><span>the Mountain Goat</span></li>
+  </ul>
 
   <p>Pick your hellbuddy any time: right-click it and choose <em>Animal</em>. Every hellbuddy is
     hand-drawn in Procreate, and more are coming soon.</p>
