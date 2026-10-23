@@ -136,7 +136,10 @@
     if (os) document.documentElement.dataset.os = os;
   })();
 </script>
-<!-- Visitor counts and download clicks (no cookies): https://hellbuddies.goatcounter.com -->
+<!-- Visitor counts and download clicks (no cookies): https://hellbuddies.goatcounter.com.
+     Visits count as the page itself, without ?ref=… or ?os=…, so links tagged for
+     different places (?ref=reddit) don't split the numbers; the ref still shows as the source. -->
+<script>window.goatcounter = { path: function () { return location.pathname || "/"; } };</script>
 <script data-goatcounter="https://hellbuddies.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
