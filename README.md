@@ -1,7 +1,7 @@
-# Hellbuddy
+# Hellbuddies
 
-A little hellbender that lives on top of your Mac's windows.
+Little hand-drawn animals that live on top of your windows, on Mac and Windows.
 
-**Download and install: https://kauffmanes.github.io/hellbuddy**
+**Download and install: https://hellbuddies.com**
 
 This repo only hosts the download page and releases.
